@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Danh Sách Hàng Hóa & Sản Phẩm - SaleApp</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1 text-muted small">
+                    <li class="breadcrumb-item"><a th:href="@{/}" class="text-decoration-none">Trang chủ</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>
+                </ol>
+            </nav>
+            <h3 class="fw-bold mb-0 text-dark">
+                <i class="bi bi-box-seam text-primary me-2"></i>Danh Sách Hàng Hóa & Sản Phẩm
+            </h3>
+        </div>
+        <div>
+            <a th:href="@{/products/add}" class="btn btn-primary">
+                <i class="bi bi-plus-circle-fill me-1"></i> Đăng Bán Sản Phẩm Mới
+            </a>
+        </div>
+    </div>
+
+    <!-- Table Card -->
+    <div class="store-card">
+        <div class="store-card-header d-flex justify-content-between align-items-center">
+            <span class="fw-bold text-dark">
+                Tất cả mặt hàng (<span th:text="${#lists.size(products)}">0</span> sản phẩm)
+            </span>
+            <span class="text-muted small">
+                Bảng giá niêm yết chính thức
+            </span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table store-table">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Mã SP</th>
+                        <th>Tên Sản Phẩm</th>
+                        <th style="width: 170px;">Giá Niêm Yết</th>
+                        <th style="width: 180px;">Ngành Hàng</th>
+                        <th>Mô Tả Chi Tiết</th>
+                        <th style="width: 160px;" class="text-end">Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${#lists.isEmpty(products)}">
+                        <td colspan="6" class="text-center py-5">
+                            <div class="text-muted">
+                                <i class="bi bi-box2 display-4 d-block mb-3 opacity-50"></i>
+                                <h6 class="fw-semibold text-dark">Kho hàng hiện đang trống</h6>
+                                <p class="small mb-3">Đăng bán sản phẩm mới để hiển thị tại trang chủ cửa hàng.</p>
+                                <a th:href="@{/products/add}" class="btn btn-primary btn-sm">
+                                    <i class="bi bi-plus-lg me-1"></i> Thêm sản phẩm đầu tiên
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:each="product : ${products}">
+                        <td>
+                            <span class="badge bg-light text-secondary border fw-bold" th:text="'#' + ${product.id}">#1</span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="rounded-3 bg-light text-primary p-2 d-inline-flex border">
+                                    <i class="bi bi-phone"></i>
+                                </div>
+                                <span class="fw-bold text-dark" th:text="${product.name}">Tên sản phẩm</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="fw-bold text-danger" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' ₫'">
+                                0 ₫
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1" th:if="${product.category != null}">
+                                <i class="bi bi-tag-fill me-1"></i>
+                                <span th:text="${product.category.name}">Ngành hàng</span>
+                            </span>
+                            <span class="text-muted small fst-italic" th:if="${product.category == null}">Chưa phân loại</span>
+                        </td>
+                        <td>
+                            <span class="text-muted small d-inline-block text-truncate" style="max-width: 260px;" th:text="${product.description}">
+                                Mô tả sản phẩm
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <div class="btn-group gap-1">
+                                <a th:href="@{/products/edit/{id}(id=${product.id})}" 
+                                   class="btn btn-sm btn-outline-primary"
+                                   title="Chỉnh sửa thông tin">
+                                    <i class="bi bi-pencil-square me-1"></i>Sửa
+                                </a>
+                                <a th:href="@{/products/delete/{id}(id=${product.id})}" 
+                                   class="btn btn-sm btn-outline-danger" 
+                                   onclick="return confirm('Bạn có chắc chắn muốn gỡ bỏ sản phẩm này khỏi gian hàng?')"
+                                   title="Xóa khỏi gian hàng">
+                                    <i class="bi bi-trash3 me-1"></i>Xóa
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

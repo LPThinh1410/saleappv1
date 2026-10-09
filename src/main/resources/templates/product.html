@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Sản Phẩm - SaleApp</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .product-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            height: 100%;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        .product-img {
+            height: 200px;
+            object-fit: cover;
+            background-color: #f8f9fa;
+        }
+        .price-text {
+            color: #dc3545;
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold" th:href="@{/}">
+                <i class="bi bi-shop me-2"></i>SaleApp
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-spinner"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">Trang chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/products}">Sản phẩm</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container mb-5">
+        <!-- Search & Filter Card -->
+        <div class="card shadow-sm mb-4 border-0">
+            <div class="card-body p-4">
+                <h5 class="card-title fw-bold mb-3 text-secondary">
+                    <i class="bi bi-funnel me-1"></i> Bộ lọc & Tìm kiếm sản phẩm
+                </h5>
+                <form th:action="@{/products}" method="get" class="row g-3">
+                    <!-- Từ khóa -->
+                    <div class="col-md-3">
+                        <label for="keyword" class="form-label fw-semibold">Từ khóa</label>
+                        <input type="text" class="form-control" id="keyword" name="keyword" 
+                               placeholder="Tên sản phẩm..." th:value="${param.keyword}">
+                    </div>
+
+                    <!-- Danh mục -->
+                    <div class="col-md-3">
+                        <label for="categoryId" class="form-label fw-semibold">Danh mục</label>
+                        <select class="form-select" id="categoryId" name="categoryId">
+                            <option value="">-- Tất cả danh mục --</option>
+                            <option th:each="c : ${categories}" 
+                                    th:value="${c.id}" 
+                                    th:text="${c.name}"
+                                    th:selected="${param.categoryId != null and param.categoryId[0] == #strings.toString(c.id)}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Giá từ -->
+                    <div class="col-md-2">
+                        <label for="fromPrice" class="form-label fw-semibold">Giá từ (VNĐ)</label>
+                        <input type="number" class="form-control" id="fromPrice" name="fromPrice" 
+                               placeholder="0" th:value="${param.fromPrice}">
+                    </div>
+
+                    <!-- Đến giá -->
+                    <div class="col-md-2">
+                        <label for="toPrice" class="form-label fw-semibold">Đến giá (VNĐ)</label>
+                        <input type="number" class="form-control" id="toPrice" name="toPrice" 
+                               placeholder="50000000" th:value="${param.toPrice}">
+                    </div>
+
+                    <!-- Nút thao tác -->
+                    <div class="col-md-2 d-flex align-items-end gap-2">
+                        <button type="submit" class="btn btn-primary flex-fill">
+                            <i class="bi bi-search me-1"></i> Tìm
+                        </button>
+                        <a th:href="@{/products}" class="btn btn-outline-secondary" title="Đặt lại bộ lọc">
+                            <i class="bi bi-arrow-clockwise"></i>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Product List Section -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold mb-0">Danh sách sản phẩm</h4>
+            <span class="badge bg-secondary fs-6" th:text="${products != null ? products.size() : 0} + ' sản phẩm'"></span>
+        </div>
+
+        <!-- Empty state -->
+        <div th:if="${#lists.isEmpty(products)}" class="alert alert-info text-center py-5 shadow-sm rounded-3">
+            <i class="bi bi-inbox fs-1 d-block mb-2 text-muted"></i>
+            <h5>Không tìm thấy sản phẩm nào!</h5>
+            <p class="text-muted mb-3">Vui lòng thử điều chỉnh lại bộ lọc hoặc từ khóa tìm kiếm.</p>
+            <a th:href="@{/products}" class="btn btn-sm btn-outline-primary">Xem tất cả sản phẩm</a>
+        </div>
+
+        <!-- Products Grid -->
+        <div th:unless="${#lists.isEmpty(products)}" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            <div class="col" th:each="p : ${products}">
+                <div class="card product-card border-0 shadow-sm rounded-3 overflow-hidden">
+                    <img th:src="${p.image}" class="card-img-top product-img" th:alt="${p.name}"
+                         onerror="this.onerror=null; this.src='https://placehold.co/400x300?text=' + encodeURIComponent(this.alt);">
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title fw-bold text-truncate" th:text="${p.name}" th:title="${p.name}">Tên sản phẩm</h6>
+                        <p class="card-text text-muted small text-truncate-2 flex-grow-1" th:text="${p.description}">Mô tả ngắn về sản phẩm...</p>
+                        <div class="mt-2 mb-3">
+                            <span class="price-text" th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')} + ' đ'">25,000,000 đ</span>
+                        </div>
+                        <a th:href="@{'/products/' + ${p.id}}" class="btn btn-outline-primary btn-sm w-100 mt-auto">
+                            <i class="bi bi-eye me-1"></i> Xem chi tiết
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-3 text-center text-muted">
+        <div class="container small">
+            &copy; 2026 SaleApp - Dự án Công Nghệ Phần Mềm.
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

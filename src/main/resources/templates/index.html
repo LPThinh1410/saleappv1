@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Trang Chủ - Siêu Thị Mua Sắm SaleApp</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <!-- Promotional Retail Banner -->
+    <div class="retail-banner mb-4">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <span class="badge bg-danger text-white px-3 py-2 rounded-pill mb-3 fw-bold text-uppercase">
+                    <i class="bi bi-fire me-1"></i> Ưu Đãi Mùa Mua Sắm
+                </span>
+                <h1 class="display-5 fw-bold mb-3">Siêu Sale Công Nghệ Chính Hãng</h1>
+                <p class="lead text-white text-opacity-90 mb-4" style="max-width: 600px;">
+                    Mua sắm điện thoại, máy tính, phụ kiện với mức giá tốt nhất thị trường. Cam kết chính hãng 100%, bảo hành toàn diện.
+                </p>
+                <div class="d-flex flex-wrap gap-2">
+                    <a th:href="@{/products}" class="btn btn-warning text-dark fw-bold px-4 py-2 shadow-sm">
+                        <i class="bi bi-bag-check-fill me-1"></i> Xem Tất Cả Sản Phẩm
+                    </a>
+                    <a th:href="@{/products/add}" class="btn btn-outline-light px-4 py-2">
+                        <i class="bi bi-plus-circle me-1"></i> Đăng Bán Sản Phẩm
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center d-none d-lg-block">
+                <i class="bi bi-phone display-1 text-white opacity-75"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4 Trust Highlights -->
+    <div class="row g-3 mb-5">
+        <div class="col-6 col-lg-3">
+            <div class="trust-badge-box">
+                <div class="trust-icon"><i class="bi bi-truck"></i></div>
+                <div>
+                    <h6 class="fw-bold mb-0 small">Giao Hàng Miễn Phí</h6>
+                    <span class="text-muted small">Cho đơn từ 500.000₫</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="trust-badge-box">
+                <div class="trust-icon"><i class="bi bi-shield-check"></i></div>
+                <div>
+                    <h6 class="fw-bold mb-0 small">Hàng Chính Hãng</h6>
+                    <span class="text-muted small">Bảo hành chính hãng 12T</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="trust-badge-box">
+                <div class="trust-icon"><i class="bi bi-arrow-repeat"></i></div>
+                <div>
+                    <h6 class="fw-bold mb-0 small">Đổi Trả Dễ Dàng</h6>
+                    <span class="text-muted small">Trong vòng 30 ngày lỗi 1-1</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="trust-badge-box">
+                <div class="trust-icon"><i class="bi bi-headset"></i></div>
+                <div>
+                    <h6 class="fw-bold mb-0 small">Hỗ Trợ 24/7</h6>
+                    <span class="text-muted small">Hotline: 1900 6868</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Strip -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h4 class="fw-bold mb-0">Ngành Hàng Nổi Bật</h4>
+            <small class="text-muted">Khám phá các danh mục sản phẩm kinh doanh tại cửa hàng</small>
+        </div>
+        <a th:href="@{/categories}" class="btn btn-outline-primary btn-sm">
+            Xem tất cả ngành hàng <i class="bi bi-chevron-right ms-1"></i>
+        </a>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mb-5" th:if="${not #lists.isEmpty(categories)}">
+        <a th:each="cat : ${categories}" 
+           th:href="@{/categories}" 
+           class="btn btn-light border rounded-pill px-3 py-2 fw-semibold text-secondary">
+            <i class="bi bi-tag text-primary me-1"></i>
+            <span th:text="${cat.name}">Danh mục</span>
+        </a>
+    </div>
+
+    <!-- Product Showcase -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h4 class="fw-bold mb-0">Sản Phẩm Đang Bán</h4>
+            <small class="text-muted">Các mặt hàng công nghệ mới nhất vừa cập nhật</small>
+        </div>
+        <div class="d-flex gap-2">
+            <a th:href="@{/products/add}" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-lg me-1"></i> Thêm sản phẩm
+            </a>
+            <a th:href="@{/products}" class="btn btn-outline-secondary btn-sm">
+                Quản lý kho hàng
+            </a>
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    <div th:if="${#lists.isEmpty(products)}" class="card p-5 text-center my-4 border-dashed bg-white">
+        <i class="bi bi-bag-x display-4 text-muted mb-3"></i>
+        <h5 class="fw-bold">Chưa có sản phẩm nào được bày bán</h5>
+        <p class="text-muted small mb-3">Hãy thêm sản phẩm đầu tiên để khách hàng có thể xem và đặt hàng.</p>
+        <div>
+            <a th:href="@{/products/add}" class="btn btn-primary">
+                <i class="bi bi-plus-lg me-1"></i> Thêm sản phẩm ngay
+            </a>
+        </div>
+    </div>
+
+    <!-- Product Grid Cards -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5" th:if="${not #lists.isEmpty(products)}">
+        <div class="col" th:each="product : ${products}">
+            <div class="product-card">
+                <div class="product-img-wrap">
+                    <span class="product-badge-promo">Chính Hãng</span>
+                    <i class="bi bi-phone display-4 text-secondary opacity-50"></i>
+                </div>
+                <div class="product-info">
+                    <div class="product-category-name" th:text="${product.category != null ? product.category.name : 'Thiết bị'}">
+                        Danh mục
+                    </div>
+                    <h6 class="product-title" th:text="${product.name}">Tên sản phẩm</h6>
+                    <p class="product-desc" th:text="${product.description}">Mô tả chi tiết sản phẩm.</p>
+                    <div class="d-flex justify-content-between align-items-end mt-2 pt-2 border-top">
+                        <div>
+                            <small class="text-muted d-block" style="font-size: 0.75rem;">Giá niêm yết:</small>
+                            <span class="product-price" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' ₫'">
+                                0 ₫
+                            </span>
+                        </div>
+                        <div class="btn-group">
+                            <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-outline-primary btn-sm p-1 px-2" title="Chỉnh sửa">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a th:href="@{/products/delete/{id}(id=${product.id})}" 
+                               onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')" 
+                               class="btn btn-outline-danger btn-sm p-1 px-2" title="Xóa">
+                                <i class="bi bi-trash3"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

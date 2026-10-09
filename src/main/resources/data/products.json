@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "name": "iPhone 15 Pro",
+    "description": "Chip Apple A17 Pro, khung viền titan",
+    "price": 25000000.0,
+    "image": "/images/Apple-iPhone-15-Pro.jpg",
+    "categoryId": 1
+  },
+  {
+    "id": 2,
+    "name": "Samsung Galaxy S24",
+    "description": "Tích hợp Galaxy AI thông minh",
+    "price": 20000000.0,
+    "image": "https://via.placeholder.com/200",
+    "categoryId": 1
+  },
+  {
+    "id": 3,
+    "name": "iPad Pro M4",
+    "description": "Màn hình OLED Ultra Retina XDR siêu nét",
+    "price": 28000000.0,
+    "image": "https://via.placeholder.com/200",
+    "categoryId": 2
+  },
+  {
+    "id": 4,
+    "name": "iPad Air M2",
+    "description": "Hỗ trợ Apple Pencil Pro",
+    "price": 16000000.0,
+    "image": "https://via.placeholder.com/200",
+    "categoryId": 2
+  }
+]

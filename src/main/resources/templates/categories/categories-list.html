@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Danh Mục Ngành Hàng - SaleApp</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1 text-muted small">
+                    <li class="breadcrumb-item"><a th:href="@{/}" class="text-decoration-none">Trang chủ</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Danh mục ngành hàng</li>
+                </ol>
+            </nav>
+            <h3 class="fw-bold mb-0 text-dark">
+                <i class="bi bi-tags text-primary me-2"></i>Danh Mục Ngành Hàng
+            </h3>
+        </div>
+        <div>
+            <a th:href="@{/categories/add}" class="btn btn-primary">
+                <i class="bi bi-plus-circle-fill me-1"></i> Thêm Ngành Hàng Mới
+            </a>
+        </div>
+    </div>
+
+    <!-- Table Card -->
+    <div class="store-card">
+        <div class="store-card-header d-flex justify-content-between align-items-center">
+            <span class="fw-bold text-dark">
+                Tất cả ngành hàng (<span th:text="${#lists.size(categories)}">0</span>)
+            </span>
+            <span class="text-muted small">
+                Cập nhật lần cuối: Hôm nay
+            </span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table store-table">
+                <thead>
+                    <tr>
+                        <th style="width: 100px;">Mã ngành</th>
+                        <th>Tên ngành hàng</th>
+                        <th style="width: 180px;" class="text-end">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${#lists.isEmpty(categories)}">
+                        <td colspan="3" class="text-center py-5">
+                            <div class="text-muted">
+                                <i class="bi bi-inbox display-4 d-block mb-3 opacity-50"></i>
+                                <h6 class="fw-semibold text-dark">Chưa có ngành hàng nào</h6>
+                                <p class="small mb-3">Tạo danh mục ngành hàng để phân loại các sản phẩm kinh doanh.</p>
+                                <a th:href="@{/categories/add}" class="btn btn-primary btn-sm">
+                                    <i class="bi bi-plus-lg me-1"></i> Thêm ngành hàng đầu tiên
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:each="category : ${categories}">
+                        <td>
+                            <span class="badge bg-light text-secondary border fw-bold" th:text="'#' + ${category.id}">#1</span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="rounded-circle bg-primary-subtle text-primary p-2 d-inline-flex">
+                                    <i class="bi bi-folder2-open"></i>
+                                </div>
+                                <span class="fw-bold text-dark" th:text="${category.name}">Tên danh mục</span>
+                            </div>
+                        </td>
+                        <td class="text-end">
+                            <div class="btn-group gap-1">
+                                <a th:href="@{/categories/edit/{id}(id=${category.id})}" 
+                                   class="btn btn-sm btn-outline-primary"
+                                   title="Chỉnh sửa">
+                                    <i class="bi bi-pencil-square me-1"></i>Sửa
+                                </a>
+                                <a th:href="@{/categories/delete/{id}(id=${category.id})}" 
+                                   class="btn btn-sm btn-outline-danger" 
+                                   onclick="return confirm('Bạn có chắc chắn muốn xóa ngành hàng này?')"
+                                   title="Xóa">
+                                    <i class="bi bi-trash3 me-1"></i>Xóa
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
